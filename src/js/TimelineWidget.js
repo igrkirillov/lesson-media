@@ -1,4 +1,5 @@
 import PostsWidget from "./PostsWidget";
+import Location from "./Location";
 
 export default class TimelineWidget {
   constructor(ownerElement, user) {
@@ -19,5 +20,9 @@ export default class TimelineWidget {
 
   setFocus() {
     this.postsWidget.setFocus();
+  }
+
+  get currentLocation() {
+    return new Location(5, 5);
   }
 }

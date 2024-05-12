@@ -1,13 +1,18 @@
 import cameraIcon from "/src/icons/camera.png";
 import microphoneIcon from "/src/icons/microphone.png";
+import Post from "./Post";
+import postTypes from "./postTypes";
+import PostWidget from "./PostWidget";
 
 export default class PostsWidget {
-  constructor(ownerElement, chatWidget) {
+  constructor(ownerElement, timelineWidget) {
     this.element = this.createElement(ownerElement);
     this.postWidgets = [];
-    this.chatWidget = chatWidget;
+    this.timelineWidget = timelineWidget;
     this.addListeners();
     this.setFocus();
+
+    this.addTextPost("Text \n text")
   }
 
   createElement(ownerElement) {
@@ -35,16 +40,10 @@ export default class PostsWidget {
   }
 
   addListeners() {
-    this.onpostInputButtonClick = this.onpostInputButtonClick.bind(this);
-    this.onpostInputTextKeyDown = this.onpostInputTextKeyDown.bind(this);
-    this.postInputButtonElement.addEventListener(
-      "click",
-      this.onpostInputButtonClick
-    );
-    this.postInputTextElement.addEventListener(
-      "keydown",
-      this.onpostInputTextKeyDown
-    );
+    this.onPostInputButtonClick = this.onPostInputButtonClick.bind(this);
+    this.onPostInputTextKeyDown = this.onPostInputTextKeyDown.bind(this);
+    this.postInputButtonElement.addEventListener("click", this.onPostInputButtonClick);
+    this.postInputTextElement.addEventListener("keydown", this.onPostInputTextKeyDown);
   }
 
   get postsFeedElement() {
@@ -59,19 +58,36 @@ export default class PostsWidget {
     return this.element.querySelector(".post-input-button");
   }
 
-  onpostInputButtonClick() {
-    this.sendpost(this.postInputTextElement.value);
+  onPostInputButtonClick() {
+    this.addTextPost(this.postInputTextElement.value);
     this.postInputTextElement.value = "";
   }
 
-  onpostInputTextKeyDown(event) {
+  onPostInputTextKeyDown(event) {
     if (event.key === "Enter" || event.keyCode === 13) {
-      this.sendpost(this.postInputTextElement.value);
+      this.addTextPost(this.postInputTextElement.value);
       this.postInputTextElement.value = "";
     }
   }
 
-  sendpost(text) {
+  addTextPost(text) {
+    const post = new Post(postTypes.text, text, new Date(), this.timelineWidget.currentLocation);
+    this.addPost(post);
+  }
+
+  addVideoPost(blob) {
+    const post = new Post(postTypes.video, blob, new Date(), this.timelineWidget.currentLocation);
+    this.addPost(post);
+  }
+
+  addAudioPost(blob) {
+    const post = new Post(postTypes.audio, blob, new Date(), this.timelineWidget.currentLocation);
+    this.addPost(post);
+  }
+
+  addPost(post) {
+    const postWidget = new PostWidget(this.postsFeedElement, this, post);
+    this.postWidgets.push(postWidget);
   }
 
   setFocus() {

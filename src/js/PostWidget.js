@@ -1,28 +1,27 @@
-import {toChatDateFormat} from "./utils";
+import {toPostDateFormat} from "./utils";
+import eyeIcon from "/src/icons/eye.png";
 
 export default class PostWidget {
-  constructor(ownerElement, postsWidget, data) {
-    this.element = this.createElement(ownerElement, postsWidget, data);
+  constructor(ownerElement, postsWidget, post) {
+    this.element = this.createElement(ownerElement, postsWidget, post);
     this.postsWidget = postsWidget;
-    this.data = data;
+    this.data = post;
   }
 
-  createElement(ownerElement, postsWidget, data) {
+  createElement(ownerElement, postsWidget, post) {
     const element = document.createElement("div");
     element.classList.add("post");
-    if (data.user.id === postsWidget.currentUser.id) {
-      element.classList.add("post-own");
-    } else {
-      element.classList.add("post-another");
-    }
     element.innerHTML = `
         <div class="post-container">
             <div class="post-title">
-                <span>${data.user.name}, </span>
-                <span>${toChatDateFormat(data.dateTime)}</span>
+                <span>${toPostDateFormat(post.dateTime)}</span>
             </div>
-            <div class="post-content">
-                <span>${data.text}</span>
+            <div class="post-data">
+                <span>${post.data}</span>
+            </div>
+            <div class="post-location">
+                <span>[${post.location.latitude}, ${post.location.longitude}]</span>
+                <img src="${eyeIcon}" class="eye-icon-class">
             </div>
         </div>
     `;
