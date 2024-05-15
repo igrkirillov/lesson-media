@@ -1,3 +1,3 @@
-# 9 Animation
-[![Build status](https://ci.appveyor.com/api/projects/status/i6tt11r09hea5cxd?svg=true)](https://ci.appveyor.com/project/igrkirillov/lesson-animations)\
+# 10 Media
+[![Build status](https://ci.appveyor.com/api/projects/status/3bbk3j20x8sy5t5k?svg=true)](https://ci.appveyor.com/project/igrkirillov/lesson-media)
 Опубликовал фронт на [github-pages](https://igrkirillov.github.io/lesson-animations/#)
