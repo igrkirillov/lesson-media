@@ -73,6 +73,7 @@ export default class ManualLocationDialogWidget {
   }
 
   onClickCancel() {
+    this.locTipWidget.close();
     this.cancelCallback();
     this.close();
   }
