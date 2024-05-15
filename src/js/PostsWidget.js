@@ -42,8 +42,14 @@ export default class PostsWidget {
   addListeners() {
     this.onPostInputButtonClick = this.onPostInputButtonClick.bind(this);
     this.onPostInputTextKeyDown = this.onPostInputTextKeyDown.bind(this);
-    this.postInputButtonElement.addEventListener("click", this.onPostInputButtonClick);
-    this.postInputTextElement.addEventListener("keydown", this.onPostInputTextKeyDown);
+    this.postInputButtonElement.addEventListener(
+      "click",
+      this.onPostInputButtonClick
+    );
+    this.postInputTextElement.addEventListener(
+      "keydown",
+      this.onPostInputTextKeyDown
+    );
   }
 
   get postsFeedElement() {
@@ -72,23 +78,34 @@ export default class PostsWidget {
 
   addTextPost(text) {
     const widget = this;
-    this.locationDeterminerWidget.determineMyLocation()
-      .then(location => {
+    this.locationDeterminerWidget
+      .determineMyLocation()
+      .then((location) => {
         const post = new Post(postTypes.text, text, new Date(), location);
         widget.addPost(post);
       })
-      .catch(e => {
+      .catch((e) => {
         console.log("add text with error " + e);
-      })
+      });
   }
 
   addVideoPost(blob) {
-    const post = new Post(postTypes.video, blob, new Date(), this.timelineWidget.currentLocation);
+    const post = new Post(
+      postTypes.video,
+      blob,
+      new Date(),
+      this.timelineWidget.currentLocation
+    );
     this.addPost(post);
   }
 
   addAudioPost(blob) {
-    const post = new Post(postTypes.audio, blob, new Date(), this.timelineWidget.currentLocation);
+    const post = new Post(
+      postTypes.audio,
+      blob,
+      new Date(),
+      this.timelineWidget.currentLocation
+    );
     this.addPost(post);
   }
 

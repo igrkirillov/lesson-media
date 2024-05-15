@@ -1,4 +1,4 @@
-import {checkValidityLocationText, parseTextToLocationDto} from "./utils";
+import { checkValidityLocationText, parseTextToLocationDto } from "./utils";
 import ToolTipWidget from "./ToolTipWidget";
 
 export default class ManualLocationDialogWidget {
@@ -105,7 +105,7 @@ export default class ManualLocationDialogWidget {
   close() {
     this.okButtonElement.removeEventListener("click", this.onClickOk);
     this.cancelButtonElement.removeEventListener("click", this.onClickCancel);
-    this.locationElement.removeEventListener("keydown", this.onLocationKeyDown)
+    this.locationElement.removeEventListener("keydown", this.onLocationKeyDown);
     this.locationElement.removeEventListener("focus", this.onFocusLocation);
     this.ownerElement.removeChild(this.element);
   }

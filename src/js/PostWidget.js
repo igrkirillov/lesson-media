@@ -1,4 +1,4 @@
-import {toPostDateFormat} from "./utils";
+import { toPostDateFormat } from "./utils";
 import eyeIcon from "/src/icons/eye.png";
 
 export default class PostWidget {
@@ -20,7 +20,9 @@ export default class PostWidget {
                 <span>${post.data}</span>
             </div>
             <div class="post-location">
-                <span>[${post.location.latitude}, ${post.location.longitude}]</span>
+                <span>[${post.location.latitude}, ${
+      post.location.longitude
+    }]</span>
                 <img src="${eyeIcon}" class="eye-icon-class">
             </div>
         </div>

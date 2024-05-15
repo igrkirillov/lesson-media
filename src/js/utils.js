@@ -18,12 +18,12 @@ export function parseTextToLocationDto(text) {
   return location;
 }
 
-const locationTextRegExpr = /\s*[\[]?[-]?[\d.]+\s*,\s*[-]?[\d.]+[\]]?\s*/;
+const locationTextRegExpr = /\s*\[?-?[\d.]+\s*,\s*-?[\d.]+\]?\s*/;
 export function checkValidityLocationText(text) {
   if (!text) {
     throw new Error("Поле не может быть пустым!");
   }
   if (!locationTextRegExpr.test(text)) {
-    throw new Error("Текст в поле не соответствует заданному формату!")
+    throw new Error("Текст в поле не соответствует заданному формату!");
   }
 }

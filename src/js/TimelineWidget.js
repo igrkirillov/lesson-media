@@ -2,7 +2,7 @@ import PostsWidget from "./PostsWidget";
 import Location from "./Location";
 
 export default class TimelineWidget {
-  constructor(ownerElement, user) {
+  constructor(ownerElement) {
     this.element = this.createElement(ownerElement);
     this.postsWidget = new PostsWidget(this.element, this);
     this.addListeners();
@@ -15,8 +15,7 @@ export default class TimelineWidget {
     return element;
   }
 
-  addListeners() {
-  }
+  addListeners() {}
 
   setFocus() {
     this.postsWidget.setFocus();

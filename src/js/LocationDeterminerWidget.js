@@ -18,9 +18,12 @@ export default class LocationDeterminerWidget {
   determineWithNavigator() {
     return new Promise((resolve, reject) => {
       const wrapResolveWithLocationDto = (geo) => {
-        resolve(new Location(geo.coords.latitude, geo.coords.longitude))
+        resolve(new Location(geo.coords.latitude, geo.coords.longitude));
       };
-      navigator.geolocation.getCurrentPosition(wrapResolveWithLocationDto, reject);
+      navigator.geolocation.getCurrentPosition(
+        wrapResolveWithLocationDto,
+        reject
+      );
     });
   }
 
