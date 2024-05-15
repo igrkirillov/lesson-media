@@ -194,3 +194,18 @@ body {
 .manual-location-dialog-cancel {
     margin-right: 4px;
 }
+
+.tip {
+    position: absolute;
+    background-color: white;
+    z-index: 500;
+}
+
+.tip-hidden {
+    display: none;
+}
+
+.tip-text {
+    font-style: italic;
+    color: darkred;
+}

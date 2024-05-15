@@ -1,4 +1,5 @@
-import {parseTextToLocationDto} from "./utils";
+import {checkValidityLocationText, parseTextToLocationDto} from "./utils";
+import ToolTipWidget from "./ToolTipWidget";
 
 export default class ManualLocationDialogWidget {
   constructor(ownerElement, okCallback, cancelCallback) {
@@ -6,8 +7,9 @@ export default class ManualLocationDialogWidget {
     this.element = this.createElement(ownerElement);
     this.okCallback = okCallback;
     this.cancelCallback = cancelCallback;
+    this.locTipWidget = new ToolTipWidget(this.locationElement);
     this.addListeners();
-    this.updateEnableOfOkButton();
+    this.validateForm();
     this.setFocus();
   }
 
@@ -27,7 +29,7 @@ export default class ManualLocationDialogWidget {
       <div class="manual-location-dialog-container">
           <div class="manual-location-dialog-fields">
               <label for="location">Введите координаты xxxx.xxxx, xxxx.xxxx</label>
-              <input id="location" type="text" class="manual-location-dialog-location" required pattern="\\s*[\\-]?[\\d.]+\\s*,\\s*[\\-]?[\\d.]+\\s*">
+              <input id="location" type="text" class="manual-location-dialog-location">
           </div>
           <div class="manual-location-dialog-buttons">
               <input class="manual-location-dialog-cancel" type="submit" value="Отмена">              
@@ -55,12 +57,17 @@ export default class ManualLocationDialogWidget {
     this.onClickOk = this.onClickOk.bind(this);
     this.onClickCancel = this.onClickCancel.bind(this);
     this.onLocationKeyDown = this.onLocationKeyDown.bind(this);
+    this.onFocusLocation = this.onFocusLocation.bind(this);
     this.okButtonElement.addEventListener("click", this.onClickOk);
     this.cancelButtonElement.addEventListener("click", this.onClickCancel);
     this.locationElement.addEventListener("keydown", this.onLocationKeyDown);
+    this.locationElement.addEventListener("focus", this.onFocusLocation);
   }
 
   onClickOk() {
+    if (!this.validateForm()) {
+      return;
+    }
     this.okCallback(parseTextToLocationDto(this.locationElement.value));
     this.close();
   }
@@ -71,21 +78,35 @@ export default class ManualLocationDialogWidget {
   }
 
   onLocationKeyDown(event) {
-    this.updateEnableOfOkButton();
+    this.locTipWidget.close();
     if (event.key === "Enter" || event.keyCode === 13) {
       this.okCallback(parseTextToLocationDto(this.locationElement.value));
       this.close();
     }
   }
 
-  updateEnableOfOkButton() {
-    this.okButtonElement.disabled = !this.locationElement.checkValidity();
+  onFocusLocation() {
+    this.locTipWidget.close();
+  }
+
+  validateForm() {
+    let validity;
+    this.locTipWidget.close();
+    try {
+      checkValidityLocationText(this.locationElement.value);
+      validity = true;
+    } catch (e) {
+      this.locTipWidget.open(e.message);
+      validity = false;
+    }
+    return validity;
   }
 
   close() {
     this.okButtonElement.removeEventListener("click", this.onClickOk);
     this.cancelButtonElement.removeEventListener("click", this.onClickCancel);
     this.locationElement.removeEventListener("keydown", this.onLocationKeyDown)
+    this.locationElement.removeEventListener("focus", this.onFocusLocation);
     this.ownerElement.removeChild(this.element);
   }
 
