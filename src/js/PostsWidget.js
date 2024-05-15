@@ -3,16 +3,16 @@ import microphoneIcon from "/src/icons/microphone.png";
 import Post from "./Post";
 import postTypes from "./postTypes";
 import PostWidget from "./PostWidget";
+import LocationDeterminerWidget from "./LocationDeterminerWidget";
 
 export default class PostsWidget {
   constructor(ownerElement, timelineWidget) {
     this.element = this.createElement(ownerElement);
     this.postWidgets = [];
     this.timelineWidget = timelineWidget;
+    this.locationDeterminerWidget = new LocationDeterminerWidget(ownerElement);
     this.addListeners();
     this.setFocus();
-
-    this.addTextPost("Text \n text")
   }
 
   createElement(ownerElement) {
@@ -71,8 +71,15 @@ export default class PostsWidget {
   }
 
   addTextPost(text) {
-    const post = new Post(postTypes.text, text, new Date(), this.timelineWidget.currentLocation);
-    this.addPost(post);
+    const widget = this;
+    this.locationDeterminerWidget.determineMyLocation()
+      .then(location => {
+        const post = new Post(postTypes.text, text, new Date(), location);
+        widget.addPost(post);
+      })
+      .catch(e => {
+        console.log("add text with error " + e);
+      })
   }
 
   addVideoPost(blob) {
